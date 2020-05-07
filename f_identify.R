@@ -1,9 +1,9 @@
 #+++ ABOUT ------------------------------
 #(based on structuredCode_Template.R)
 
-#OBJECTIVE: Given an unknown MS2 spectrum (or UNK spectrum), to obtain its most similar spectra (and its metadata) from a spectra library (REF spectrum). We use the variable "score" as a score variable (range 0-1); it is based on cosine similarity comparison and number of mz coincidences REF - UNK spectra. 
+#OBJECTIVE: Given an unknown MS2 spectrum (or UNK spectrum), obtain its most similar spectra (and its metadata) from a spectra library (REF spectrum). Cosine similarity comparison is used as score method
 # (optional previous subsetting) It is possible to subset the REF spectra library using the arguments "db" (original data base), "stick2Adducts" (only REF metabolites with neutral mass compatible with possible adducts of UNK spectra), "samePrecMass" (indicating if REF and UNK precursor mz value should be equal) and topMassesNum (Nth most intensity fragments, both REF and UNK, which must have at list a common fragment). Subsetting arguments have and AND relation (REF spectra must accomplish ALL the conditions, e.g db="metlin" AND stick2Adducts=TRUE AND samePrecMass=TRUE) 
-# The REF spectra (subsetted or not) is then filtered by fragment. This step is about finding REF spectra with, at list, a minimum number (minCommonMassNum argument) of REF - UNK common fragments, becoming REF spectra applicant to cos sim algorithm; the score algorithm will be applied only to such applicant REF spectra. 
+# The REF spectra (subsetted or not) is then filtered by fragment. This step is about finding REF spectra with, at list, a minimum number (minCommonMassNum argument) of REF - UNK common fragments, becoming REF spectra applicant to cos sim algorithm.
 
 # ARGUMENTS:
 # =>UNKdata: list with unknown spectra and its metadata
@@ -100,8 +100,6 @@ identifySpectra <- function(UNKdata , cl=NULL, db=NULL, topMassesNum=NULL, ...){
     finaldf <- cbind(finaldf,
                       df_metametabolits[match(finaldf$idmetabolit,df_metametabolits$idmetabolit), names(df_metametabolits)!="idmetabolit"])
     
-    #obtain score
-    finaldf$score <- round((finaldf$cossim+log(1+7*finaldf$num_masses_coincidents/finaldf$UNKmassNum))/(1+log(8)),2)
     #round cosine similarity
     finaldf$cossim <- round(finaldf$cossim,2)
     
@@ -112,7 +110,7 @@ identifySpectra <- function(UNKdata , cl=NULL, db=NULL, topMassesNum=NULL, ...){
   #rename some column names
   colnames(finaldf)[match(c("num_masses_coincidents","id_espectre","REFenergia","REFpolaritat","REFnaturalesa","BDespectreoriginal","REFprecursor_mass","REFionsource","idmetabolit","REFnommetabolit","REFmonoisotopic_molecular_weight","REFcasNum","idUNKSpectra","msLevel","polarity","retentionTime","collisionEnergy","precursorMZ","precursorCharge","precursorIntensity","REFinstrument","REFinchikey","REFformula","acquisitionNum","REFadduct"),colnames(finaldf))] <- c("MATCHmassNum", "REFidspectra","REF_CE","REFpolarity","REFnature","REF_DBspectra","REFprecMZ","REFionSource","REFidmetabolite","REFmetaboliteName","REFmonoisotMW","REFcasNum","UNKidspectra","UNKmsLevel","UNKpolarity","UNKrt","UNK_CE","UNKprecMZ","UNKprecCharge","UNKprecInt","REFinstrument","REFinchikey","REFformula","UNKacqNum","REFprecAdduct")
   #order & subset columns
-  finaldf<-finaldf[order(finaldf$UNKacqNum, finaldf$UNKprecMZ, -finaldf$score, decreasing = FALSE), c("UNKacqNum","file","UNKprecMZ","REFmonoisotMW","assmdUNKAdduct","REFprecAdduct","REFprecMZ","score","cossim","REFmetaboliteName","REFformula","REFinchikey","REFcasNum","MATCHmassNum","UNKmassNum","UNK_CE","REF_CE","UNKpolarity","REFpolarity","UNKrt","UNKprecCharge","UNKprecInt","REFnature","REFinstrument","REFionSource","UNKmsLevel","UNKidspectra","REFidspectra","REFidmetabolite","REF_DBspectra")]
+  finaldf<-finaldf[order(finaldf$UNKacqNum, finaldf$UNKprecMZ, -finaldf$cossim, decreasing = FALSE), c("UNKacqNum","file","UNKprecMZ","REFmonoisotMW","assmdUNKAdduct","REFprecAdduct","REFprecMZ","cossim","REFmetaboliteName","REFformula","REFinchikey","REFcasNum","MATCHmassNum","UNKmassNum","UNK_CE","REF_CE","UNKpolarity","REFpolarity","UNKrt","UNKprecCharge","UNKprecInt","REFnature","REFinstrument","REFionSource","UNKmsLevel","UNKidspectra","REFidspectra","REFidmetabolite","REF_DBspectra")]
 }  
   
 identifyONEspectrum <- function(UNKidspectra, UNKspectra, UNKmetadata, candidatesNumber=20, listfragOfInterest, cosSimTh=NULL, massErrorAllowed=5, samePrecMass=FALSE, precalc, minCommonMassNum=2, topMassesNum=NULL, stick2Adducts=T, range=FALSE){

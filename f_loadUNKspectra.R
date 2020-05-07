@@ -68,7 +68,7 @@ loadUNKspectra <- function(dirpath=".", scans= NULL){
     close(arxiu_mzML)
   } 
   
-  # Apply same same ID to metadata spectra and metadata matrix
+  # Apply same ID to metadata spectra and metadata matrix
   UNKMetadata <- cbind(idUNKSpectra= seq_len(nrow(UNKMetadata)),UNKMetadata)
   UNKSpectra <- list(idUNKSpectra=seq_len(nrow(UNKMetadata)),spectra = UNKSpectra)
   result <- list(Metadata=UNKMetadata,Spectra=UNKSpectra)

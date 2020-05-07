@@ -54,7 +54,7 @@ plotSpectra <- function(unk, ref, resultIdent){
   text_x <- max(c(df1$x,df2$x))
   text_y <- 95
   p <- p + 
-    annotate(geom="text", x=min(c(df1$x,df2$x)), y=-text_y, label=paste0("SC: ", metadata$score,"\nM: ", metadata$MATCHmassNum,"/",metadata$UNKmassNum,"\ncoSim: ", metadata$cossim), hjust = 0, vjust=1)+
+    annotate(geom="text", x=min(c(df1$x,df2$x)), y=-text_y, label=paste0("\nM: ", metadata$MATCHmassNum,"/",metadata$UNKmassNum,"\ncoSim: ", metadata$cossim), hjust = 0, vjust=1)+
     annotate(geom="text", x=min(c(df1$x,df2$x)), y=text_y, label=paste0("REFidmetab.: ", metadata$REFidmetabolite,"\nname: ", metadata$REFmetaboliteName,"\nMmi: ", round(metadata$REFmonoisotMW,3)),color="red",hjust = 0, vjust=0)+
     annotate(geom="text", x=text_x, y=text_y, label=paste0("REFidspectra: ",ref,"\nadduct: ", metadata$REFprecAdduct,"\nprecMZ: ", round(metadata$REFprecMZ,3)),color="red",hjust = 1, vjust=0) + 
     annotate(geom="text", x=text_x, y=-text_y, label=paste0("UNKidspectra: ",unk,"\nadduct?: ", metadata$assmdUNKAdduct,"\nprecMZ: ", round(metadata$UNKprecMZ,3)),hjust = 1, vjust=1)

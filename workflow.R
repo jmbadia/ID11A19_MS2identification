@@ -24,7 +24,7 @@
 source("f_ID11A19.R")
 source("f_loadUNKspectra.R")
 source("f_identify.R")
-load("adductsTable.RData")#load adducts table (enviPat) and change positive or negative polarity with usual terms (1 or 0)
+load("resources/adductsTable.RData")#load adducts table (enviPat) and change positive or negative polarity with usual terms (1 or 0)
 adducts[adducts$Ion_mode=="positive","Ion_mode"] <- 1
 adducts[adducts$Ion_mode=="negative","Ion_mode"] <- 0
 
@@ -116,8 +116,8 @@ result <- identifySpectra(UNKdata = UNK, stick2Adducts=T, cosSimTh=0.8, massErro
 # 5. POST-ID TOOLS ------------------------------
   
 #SUMMARY: For every UNK spectra and REFmetabolite, ONLY THE BEST cossim
-summary_result <- result[,c("UNKidspectra", "REFidspectra","REFidmetabolite", "score","assmdUNKAdduct","REFprecAdduct","UNKprecMZ","REFmonoisotMW","REFinchikey")] %>% group_by(UNKidspectra, REFidmetabolite) %>% top_n(1,cossim) %>% distinct(UNKidspectra, REFidmetabolite, .keep_all = T)
+summary_result <- result[,c("UNKidspectra", "REFidspectra","REFidmetabolite", "cossim","assmdUNKAdduct","REFprecAdduct","UNKprecMZ","REFmonoisotMW","REFinchikey")] %>% group_by(UNKidspectra, REFidmetabolite) %>% top_n(1,cossim) %>% distinct(UNKidspectra, REFidmetabolite, .keep_all = T)
   
 plotSpectra(unk=305, ref=126709, result)
 infoSpectra()
-write.csv(result, file="selectedScansAllDB.csv")
+#write.csv(result, file="selectedScansAllDB.csv")
