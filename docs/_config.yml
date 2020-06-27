@@ -1,1 +1,13 @@
-theme: jekyll-theme-slate
+name: "cars"
+output_dir: "docs"
+navbar:
+  title: "Cars"
+  left:
+  - text: "Home"
+   href: index.html
+  - text: "Speed and Distance"
+   href: IDvariables.html
+output:
+  html_document:
+ theme: cosmo
+
