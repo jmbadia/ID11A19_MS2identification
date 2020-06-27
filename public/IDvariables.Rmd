@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Project variabsles
+### Project variables
 * **projectName** = "Milk_stck2Addct_CONS": Name of the project. Usually a key word with some of the arguments used in it  
 * **identDate** = "20200626_1905": Date and time the identification was made  
 * **projectDirectory** = "invisible2Git/MS2ID_Identifications/20200608_Milk"  folder with all the project files  

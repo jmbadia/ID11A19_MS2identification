@@ -1,0 +1,13 @@
+---
+title: "Description of identification variables"
+author: "jmbadia"
+date: "6/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### index
+*  [id VARIABLES](IDvariables.html)

@@ -369,55 +369,10 @@ summary {
 </div>
 
 
-<div id="project-variabsles" class="section level3">
-<h3>Project variabsles</h3>
+<div id="index" class="section level3">
+<h3>index</h3>
 <ul>
-<li><strong>projectName</strong> = “Milk_stck2Addct_CONS”: Name of the project. Usually a key word with some of the arguments used in it<br />
-</li>
-<li><strong>identDate</strong> = “20200626_1905”: Date and time the identification was made<br />
-</li>
-<li><strong>projectDirectory</strong> = “invisible2Git/MS2ID_Identifications/20200608_Milk” folder with all the project files<br />
-</li>
-<li><strong>mail2SendResult</strong> = “<a href="mailto:josepmaria.badia@gmail.com" class="email">josepmaria.badia@gmail.com</a>”: where the identification result has been send it</li>
-</ul>
-</div>
-<div id="consensus-spectra-variables" class="section level3">
-<h3>Consensus spectra variables</h3>
-<ul>
-<li><strong>useCons</strong> = TRUE: Binary indicating the use of consensus spectra. If FALSE (all or preselected) scans are identified individually</li>
-<li><strong>dec2binCons</strong> = 2: last decimal to bin similar precursor mass. A 2 value means a 0.01 binning i.e. 78.04,78.05,78.06… Scans with mass precursor under the same bin are summarized on a unique consensus spectra<br />
-</li>
-<li><strong>mzdiff</strong> = 0.02: Maximum allowed m/z difference among fragments (same spectra or not) in order to consider them as the same fragment<br />
-</li>
-<li><strong>minProp</strong> = 2/3: Considering all the scans of a bin, minimum presence required for a fragment in order to be present in the consensus spectrum</li>
-</ul>
-</div>
-<div id="fragment-bin-filter-variables" class="section level3">
-<h3>Fragment bin &amp; filter variables</h3>
-<ul>
-<li><strong>dec2binFrag</strong> = 2: Parameter to bin fragments (m/z) of two MS2 spectra before apply them a cosine similarity comparison technique. A 2 value means a 0.01 binning i.e. 78.04, 78.05, 78.06…..<br />
-</li>
-<li><strong>minNoiseAllowed</strong> = 0.01: Minimum intensity value allowed (% relative to base peak) in the noise filtering of a spectra.</li>
-</ul>
-</div>
-<div id="identification-variables" class="section level3">
-<h3>Identification variables</h3>
-<ul>
-<li><strong>stck2Add</strong> = TRUE: REF library subsetting argument. Boolean indicating if REF neutral mass must be compatible with UNK adducts (considering UNK precursor). We considere adducts the enviPat adducts list with UNK spectra polarization (positive or negative). NA’s values are always non excluyent.<br />
-</li>
-<li><strong>samePrecMass</strong> = FALSE: REF library subsetting argument. Boolean indicating if REF precursor mass and UNK precursor mass must be equals. NA’s values are always non excluyent (default samePrecMass=FALSE).<br />
-</li>
-<li><strong>cosSimTh</strong> = 0.8: cossine similarity threshold. REF spectra applicants with lower values than cosSimTh are eliminated (e.g. cosSimTh=0.9, default 0.8).<br />
-</li>
-<li><strong>massErrorTh</strong> = 10: mass ppm error contemplated on stick2Adducts and samePrecMass arguments (default massErrorAllowed=5 ppm).<br />
-</li>
-<li><strong>candNum</strong> = 20: Lastly, number of best cossim REF spectra we keep (per UNK spectra) on the final result (default candidatesNumber=100).<br />
-</li>
-<li><strong>cl</strong> = 2L: Processors to paralelize with the function. ONLY LINUX VERSION, otherwise, serial use (default value cl=NULL) should be used.</li>
-<li><strong>minCommMassNum</strong> = 2: Filter by fragment argument. Resulting REF spectra must have at least a number N (minCommonMassNum value) of common fragments with UNK spectra (default minCommonMassNum=2).<br />
-</li>
-<li><strong>topMassNum</strong> = 5: REF library subsetting argument. Only REF spectra with spectra whose top N (topMassesNum value) fragments share at list one mz with top N (topMassesNum value) UNK fragments (default, no subsetting).</li>
-<li><strong>REFfilt_db</strong> = NULL: REF library subsetting argument. Vector with the db name we want to use as REF spectra library. (e.g. db=(db=c(“metlin”,“nist”)), default =&gt; no db restrictions).</li>
+<li><a href="IDvariables.html">id VARIABLES</a></li>
 </ul>
 </div>
 
