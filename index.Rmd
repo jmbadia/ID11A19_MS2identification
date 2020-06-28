@@ -11,4 +11,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Welcome
 
-This is an MS2ID web dedicated to its documentation. Feel free to browse the navigation bar.
+This is a MS2ID web dedicated to its documentation. Feel free to browse the navigation bar.
