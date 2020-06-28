@@ -2,7 +2,7 @@
 name: "MS2ID website"
 output_dir: "docs"
 navbar:
-  title: "My Website"
+  title: "MS2ID website"
   left:
     - text: "Home"
       href: index.html

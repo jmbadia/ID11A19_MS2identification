@@ -8,7 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-https://resources.github.com/whitepapers/github-and-rstudio/
 ### Project variables
 * **projectName** = "Milk_stck2Addct_CONS": Name of the project. Usually a key word with some of the arguments used in it  
 * **identDate** = "20200626_1905": Date and time the identification was made  
