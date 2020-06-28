@@ -1,0 +1,14 @@
+---
+title: "index"
+author: "jmbadia"
+date: "6/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Welcome
+
+This is an MS2ID web dedicated to its documentation. Feel free to browse the navigation bar.

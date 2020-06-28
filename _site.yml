@@ -1,0 +1,10 @@
+#knit individually the rmd. Activate Github Pages (with /doc, without theme)
+name: "MS2ID website"
+output_dir: "docs"
+navbar:
+  title: "My Website"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "ID variables"
+      href: IDvariables.html
