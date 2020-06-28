@@ -30,13 +30,13 @@
 
 #+++ CODE ------------------------------
 loadUNKspectra <- function(dirpath=".", scans= NULL){
+  
   if(is.null(scans)){
     mzml_files <- dir(path=dirpath, pattern="*\\.mzml$", ignore.case=TRUE, full.names = FALSE)
   } else{
     scans <- optimizeScansList(scans)
     mzml_files <- scans$filename
   }
-    
   # Take and merge metadata & spectralMatrix from MS2 spectra
   UNKMetadata <- data.frame()
   UNKSpectra <- list()
@@ -52,6 +52,9 @@ loadUNKspectra <- function(dirpath=".", scans= NULL){
         pos2Catch <- pos2Catch & (temp$acquisitionNum %in% acqNumb)
       }
     }
+    #not an scan to read, jump to next file
+    if(!any(pos2Catch)) next
+    
     #load metadata & filename
     temp <- cbind(file= mzml_files[id_file], temp[pos2Catch,])#append filename to spectra metadata
     
