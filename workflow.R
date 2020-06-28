@@ -58,6 +58,7 @@ if(!workVariables$useCons) workVariables$dec2binCons <- workVariables$mzdiff  <-
 
 
 #+++ PACKGS & SOURCES ------------------------------
+require(googledrive)
 require(dplyr)
 require(glue)
 require(MSnbase)
@@ -211,9 +212,6 @@ result <- readRDS(file=file.path(workVariables$projectDirectory,"resultMilk_stck
 #obtain info
 #infoSpectra(8071, 106216)
 
-#SUMMARY: For every UNK spectra and REFmetabolite, ONLY THE BEST cossim
-summary_result <- result %>% group_by(UNKidSpectra, REFidMetabolite) %>% top_n(1, cossim) %>% distinct(UNKidSpectra, REFidMetabolite, .keep_all = T) %>% arrange(UNKprecMZ, UNKidSpectra)
-
 #dir to save files to zip
 tmpdir <- tempdir()
 filenameBase<- paste0(workVariables$projectName,"_",workVariables$identDate)
@@ -221,6 +219,8 @@ sub_tmpdir <- file.path(tmpdir,filenameBase)
 dir.create(sub_tmpdir, showWarnings = FALSE)
 
 #create EXCEL file with the summary
+#summary: For every UNK spectra and REFmetabolite, ONLY THE BEST cossim
+summary_result <- result %>% group_by(UNKidSpectra, REFidMetabolite) %>% top_n(1, cossim) %>% distinct(UNKidSpectra, REFidMetabolite, .keep_all = T) %>% arrange(UNKprecMZ, UNKidSpectra)
 createExcel(data= summary_result, filename=file.path(sub_tmpdir,filenameBase))
 
 #prepare LOT FILE (file with all the info final user needs to analize the identification result)
@@ -229,11 +229,22 @@ REFfragments <- DB$list_fragments
 REFfragments$ID_spectra <- REFfragments$ID_spectra[REFidspectra_involved] 
 REFfragments$spectra <- REFfragments$spectra[REFidspectra_involved] 
 UNKfragments <- UNK$Spectra
-lot <- list(metadata=result, UNKfragments=UNKfragments, REFfragments=REFfragments) 
+lot <- list(metadata=result, UNKfragments=UNKfragments, REFfragments=REFfragments, IDvariables=workVariables) 
 saveRDS(lot, file.path(sub_tmpdir,paste0("lot_",filenameBase,".rds")))
 
 zipFile<-file.path(workVariables$projectDirectory,paste0(filenameBase,".zip"))
 zipr(zipfile=zipFile, sub_tmpdir, include_directories = F)
+
+#save zip to gDrive
+drive_auth(email = "josepmaria.badia@gmail.com")
+chicken <- drive_upload(
+  zipFile,
+  basename(zipFile)
+)
+#share the file
+chicken <- chicken %>% drive_share(role = "reader", type = "anyone")
+link2share <- paste0("https://drive.google.com/uc?export=download&id=",chicken$id)
+#https://drive.google.com/uc?export=download&id=1GNffEuoy2fcOJ-pi2921eXYuEbCohM4_
 
 #to save gmail credentials first time
 #sudo apt-get install libsecret-1-dev
@@ -243,22 +254,20 @@ email <- compose_email(
   body = md(glue(
     "
 ### {workVariables$projectName} project identification
-Please, find attached a zip with the following files  
+Please, download <a href='{link2share}' target='_blank'>here</a> a zip with the result of identification. It contains:  
 * **A lot file** with all the resulting ID data. Use the <a href='https://jmbadia.shinyapps.io/MS2IDbrowser/' target='_blank'>MS2ID browser</a> in order to visualize and compare sample MS2 spectra (UNKnown) with their identification spectra (REFerence library spectra)
 .  
 *  **An Excel file** with the results distributed by samples. Use it to annotate the comments infered usng the MS2ID browser.  
 
-The following are the variables used on the identification workflow. Please consult <a href='https://rovira-my.sharepoint.com/:u:/g/personal/39879942-n_epp_urv_cat/EfXPug9ORUdKo9LAkqOK8-EBT-ApaBk2Q79E08_OPCHF1Q' target='_blank'>here</a> their meaning if necessary.  
+The following are the variables used on the identification workflow. Please consult <a href='https://jmbadia.github.io/ID11A19_MS2identification/IDvariables.html' target='_blank'>here</a> their meaning if necessary.  
 >  {vars2Email}
 "   
   ))
 )
-email <- add_attachment(email, file=zipFile)
 email %>%
   smtp_send(
     from = "josepmaria.badia@gmail.com",
     to = workVariables$mail2SendResult,
-    subject = "Testing the `smtp_send()` function",
+    subject = paste(workVariables$projectName, "ID results"),
     credentials = creds_key("gmail_creds_forR")
   )
-
